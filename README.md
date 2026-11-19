@@ -9,7 +9,7 @@ Bilingual: English and Cantonese-friendly Traditional Chinese (中文).
 
 > Educational tool. Not financial advice. No securities are recommended.
 
-**Live demo:** [LIVE_DEMO_URL — add the Vercel link here]
+**Live demo:** you-are-fired-bvtq5.omgs.page
 **Licence:** MIT, see [LICENSE](./LICENSE)
 
 ## What it does
