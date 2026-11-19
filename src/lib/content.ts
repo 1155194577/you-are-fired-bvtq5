@@ -6,7 +6,7 @@ export const LESSONS: { title: Bi; icon: "flame" | "piggy" | "percent" | "trend"
     icon: "flame",
     body: {
       en: "FIRE means Financial Independence, Retire Early. Save a large share of your income, invest it, and one day your investments can pay your living costs. Then work becomes a choice, not a must. It is not about being rich. It is about the gap between what you earn and what you spend, and what that gap buys you over time.",
-      zh: "FIRE 即係「財務自由，提早退休」。儲落一大part收入，拎去投資，等投資回報可以支付生活開支，咁工作就變成選擇，而唔係必須。重點唔係赚得多，而係收入同開支之間嘅差額，以及呢個差額隨時間可以買返咩。",
+      zh: "FIRE 即係「財務自由，提早退休」。儲落一大部分收入，拎去投資，等投資回報可以支付生活開支，咁工作就變成選擇，而唔係必須。重點唔係賺得多，而係收入同開支之間嘅差額，以及呢個差額隨時間可以買返咩。",
     },
   },
   {

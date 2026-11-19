@@ -97,7 +97,9 @@ export function compute(i: Inputs) {
     const essentials = p.rent + p.food + p.transport
     const core = Math.max(0, (income - essentials) * i.savingsRate)
     const saving = Math.max(0, core - (habit ? HABIT_MONTHLY : 0))
-    const annualSpend = 12 * Math.max(essentials, takeHome - core)
+    // Retirement budget = what you spend today (income minus savings), so
+    // side-hustle money you spend now is part of the lifestyle you must fund.
+    const annualSpend = 12 * Math.max(essentials, income - core)
     const target = annualSpend / i.swr
     const res = project(saving, target, ir, mpfContrib)
     return { saving, annualSpend, target, res, essentials }

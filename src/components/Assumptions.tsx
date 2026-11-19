@@ -18,6 +18,10 @@ export function AssumptionsDialog() {
       "Sequence risk: returns are assumed smooth each year. Real markets vary, and poor returns early in retirement can hurt more. The 4% and 3.5% withdrawal rates are historical approximations, not guarantees.",
       "次序風險：假設回報每年平穩。現實市場波動大，退休初期遇上差年份影響更大。4% 同 3.5% 提取率係歷史概略數字，唔係保證。",
     ),
+    t(
+      "MPF is modelled with the same return as your other money. Real MPF funds charge fees, so actual locked-bucket growth is usually lower.",
+      "強積金採用同其他資金相同嘅回報假設。實際強積金基金有收費，所以鎖定部分嘅實際增長通常較低。",
+    ),
     t("Investment gains are a what-if. Returns are not guaranteed. No securities are recommended.", "投資回報屬假設，並不保證。本工具不推薦任何證券。"),
   ]
   return (

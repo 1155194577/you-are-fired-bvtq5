@@ -69,7 +69,7 @@ function LearnPage() {
             onClick={() => setQuizOpen(true)}
             aria-label={t("Quiz", "測驗")}
             className={`grid size-20 place-items-center rounded-full border-b-[6px] transition-transform active:translate-y-[3px] active:border-b-[3px] disabled:opacity-60 ${
-              allDone ? "border-yellow-600/60 bg-yellow-400 text-yellow-950" : "border-border bg-muted text-muted-foreground"
+              allDone ? "border-primary/70 bg-primary text-primary-foreground" : "border-border bg-muted text-muted-foreground"
             }`}
           >
             {allDone ? <Star className="size-8" /> : <Lock className="size-7" />}
