@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import { Check, Coffee, Lock, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -11,7 +11,7 @@ import { NetWorthChart } from "@/components/NetWorthChart"
 import { InvestmentReturnInfo } from "@/components/InvestmentReturnInfo"
 import { LESSONS } from "@/lib/content"
 import { useAppState, useT } from "@/lib/app-state"
-import { coastFV, compute, DEFAULT_PROFILE, hk, INFLATION, PLANS, realAnnualPct, START_AGE, type Plan } from "@/lib/fire"
+import { coastFV, compute, costTotal, DEFAULT_PROFILE, hk, INFLATION, PLANS, planCosts, realAnnualPct, START_AGE, type Plan } from "@/lib/fire"
 
 export const Route = createFileRoute("/simulator")({
   component: Simulator,
@@ -21,6 +21,7 @@ const first = (v: number | readonly number[]) => (typeof v === "number" ? v : v[
 
 function Simulator() {
   const t = useT()
+  const navigate = useNavigate()
   const { profile, lessonsDone, quizPassed } = useAppState()
   const p = profile ?? DEFAULT_PROFILE
 
@@ -41,6 +42,7 @@ function Simulator() {
     returnPct: ret,
     swr: conservative ? 0.035 : 0.04,
     habit,
+    costs: p.costs,
   })
 
   const freedomText =
@@ -68,34 +70,20 @@ function Simulator() {
         </p>
       </section>
 
+      {rate === 0 && (
+        <p className="rounded-xl bg-secondary p-3 text-center text-sm font-semibold">
+          {t("I'm a 月光族: I spend it all every month.", "我係月光族：每個月用晒全部人工。")}
+        </p>
+      )}
+
       {/* CHART */}
       <Card className="p-4">
         <NetWorthChart points={r.points} target={r.target} freedom={r.freedom} />
       </Card>
 
-      {/* KEY INSIGHTS */}
-      <section className="grid grid-cols-1 gap-3">
-        <Card className="gap-1 bg-primary/10 p-4">
-          <p className="text-sm text-muted-foreground">{t("Every HK$1,000 a month you save", "每月多儲HK$1,000")}</p>
-          <p className="font-heading text-2xl font-bold">
-            {r.perThousandYears !== null
-              ? t(`= ${Math.abs(r.perThousandYears)} years of life back`, `= 人生奪返 ${Math.abs(r.perThousandYears)} 年`)
-              : t("= not measurable yet", "= 暫時未能計算")}
-          </p>
-        </Card>
-        <Card className="gap-1 p-4">
-          <p className="text-sm text-muted-foreground">{t("MPF, locked until 65", "強積金，鎖到65歲")}</p>
-          <p className="font-heading text-xl font-bold">
-            {t(
-              `${hk(r.locked65)} at 65 · top-up ≈ ${hk(r.topUpMonthly)}/mo after 65`,
-              `65歲時 ${hk(r.locked65)} · 65歲後每月補充約 ${hk(r.topUpMonthly)}`,
-            )}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {t("Not counted in your freedom date. Shown as a top-up after 65.", "唔計入自由日子，65歲後作補充顯示。")}
-          </p>
-        </Card>
-      </section>
+      <Button variant="outline" size="lg" className="h-12 w-full rounded-2xl" onClick={() => navigate({ to: "/flow" })}>
+        {t("See where your money flows", "睇下你嘅錢點流")}
+      </Button>
 
       {/* CONTROLS */}
       <section className="flex flex-col gap-5 rounded-2xl border border-border p-4">
@@ -106,7 +94,7 @@ function Simulator() {
               {Math.round(rate * 100)}% · {hk(r.saving)}/{t("mo", "月")}
             </span>
           </div>
-          <Slider value={[Math.round(rate * 100)]} min={0} max={70} step={1} onValueChange={(v) => setRate(first(v) / 100)} aria-label={t("Savings rate", "儲蓄率")} />
+          <Slider value={[Math.round(rate * 100)]} min={0} max={100} step={1} onValueChange={(v) => setRate(first(v) / 100)} aria-label={t("Savings rate", "儲蓄率")} />
           <p className="text-xs text-muted-foreground">{t("The single biggest lever. Share of money left after living costs.", "最有力嘅一個槓桿：生活開支之後，儲返幾多。")}</p>
         </div>
 
@@ -139,7 +127,7 @@ function Simulator() {
                 }`}
               >
                 <span className="block">{planLabel[k]}</span>
-                <span className="block font-normal text-muted-foreground">{hk(PLANS[k].rent + PLANS[k].food + PLANS[k].transport)}</span>
+                <span className="block font-normal text-muted-foreground">{hk(costTotal(planCosts(k, p.costs)))}</span>
               </button>
             ))}
           </div>

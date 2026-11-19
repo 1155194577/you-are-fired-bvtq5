@@ -3,7 +3,12 @@
 
 export type Plan = "parents" | "flat" | "solo"
 
-export type Profile = { salary: number; plan: Plan; hustle: number }
+export type Costs = { rent: number; food: number; transport: number }
+
+// Per-plan cost overrides chosen by the student. Missing plans use PLANS.
+export type CostOverrides = Partial<Record<Plan, Costs>>
+
+export type Profile = { salary: number; plan: Plan; hustle: number; costs?: CostOverrides }
 
 export const DEFAULT_PROFILE: Profile = { salary: 18000, plan: "parents", hustle: 0 }
 
@@ -12,6 +17,14 @@ export const PLANS: Record<Plan, { rent: number; food: number; transport: number
   parents: { rent: 2000, food: 2500, transport: 600 }, // home contribution to parents
   flat: { rent: 6000, food: 3000, transport: 700 }, // flat-share room
   solo: { rent: 9000, food: 3500, transport: 700 }, // studio
+}
+
+export function planCosts(plan: Plan, overrides?: CostOverrides): Costs {
+  return overrides?.[plan] ?? PLANS[plan]
+}
+
+export function costTotal(c: Costs) {
+  return c.rent + c.food + c.transport
 }
 
 export const HABIT_MONTHLY = 35 * 30 // HK$35/day bubble tea or coffee, 30 days
@@ -78,10 +91,11 @@ export type Inputs = {
   salary: number
   plan: Plan
   hustle: number
-  savingsRate: number // 0..0.7, share of money left after essentials
+  savingsRate: number // 0..1, share of money left after essentials
   returnPct: number // nominal annual %
   swr: number // withdrawal rate, 0.04 or 0.035
   habit: boolean
+  costs?: CostOverrides
 }
 
 export function compute(i: Inputs) {
@@ -93,7 +107,7 @@ export function compute(i: Inputs) {
   const mpfContrib = 2 * mpf
 
   const scenario = (plan: Plan, habit: boolean) => {
-    const p = PLANS[plan]
+    const p = planCosts(plan, i.costs)
     const essentials = p.rent + p.food + p.transport
     const core = Math.max(0, (income - essentials) * i.savingsRate)
     const saving = Math.max(0, core - (habit ? HABIT_MONTHLY : 0))

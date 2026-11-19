@@ -9,6 +9,9 @@ Bilingual: English and Cantonese-friendly Traditional Chinese (中文).
 
 > Educational tool. Not financial advice. No securities are recommended.
 
+**Live demo:** [LIVE_DEMO_URL — add the Vercel link here]
+**Licence:** MIT, see [LICENSE](./LICENSE)
+
 ## What it does
 
 - **Quick profile**: expected first salary, living plan (with parents, flat-share,
