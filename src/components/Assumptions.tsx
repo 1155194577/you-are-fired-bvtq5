@@ -14,6 +14,10 @@ export function AssumptionsDialog() {
     t("Living costs are rough Hong Kong presets. Edit them in the simulator to test.", "生活成本為粗略香港數字，可在模擬器內改動測試。"),
     t("Bubble tea / coffee habit = HK$35 a day, 30 days a month.", "飲品習慣 = 每日 HK$35，每月 30 日。"),
     t("Freedom date uses accessible money only. Withdrawal rate 4% (or 3.5% if chosen).", "自由日子只計可動用資產。提取率 4%（如選擇則為 3.5%）。"),
+    t(
+      "Sequence risk: returns are assumed smooth each year. Real markets vary, and poor returns early in retirement can hurt more. The 4% and 3.5% withdrawal rates are historical approximations, not guarantees.",
+      "次序風險：假設回報每年平穩。現實市場波動大，退休初期遇上差年份影響更大。4% 同 3.5% 提取率係歷史概略數字，唔係保證。",
+    ),
     t("Investment gains are a what-if. Returns are not guaranteed. No securities are recommended.", "投資回報屬假設，並不保證。本工具不推薦任何證券。"),
   ]
   return (

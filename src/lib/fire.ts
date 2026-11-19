@@ -139,3 +139,8 @@ export function coastFV(monthly: number, returnPct: number, years = 40) {
 export function hk(n: number) {
   return `HK$${Math.round(n).toLocaleString("en-US")}`
 }
+
+// Real annual return in %, after inflation: (1+nominal)/(1+inflation) - 1.
+export function realAnnualPct(nominalPct: number) {
+  return ((1 + nominalPct / 100) / (1 + INFLATION) - 1) * 100
+}

@@ -8,9 +8,10 @@ import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { LessonDialog, QuizDialog, lessonOpen } from "@/components/Lessons"
 import { NetWorthChart } from "@/components/NetWorthChart"
+import { InvestmentReturnInfo } from "@/components/InvestmentReturnInfo"
 import { LESSONS } from "@/lib/content"
 import { useAppState, useT } from "@/lib/app-state"
-import { coastFV, compute, DEFAULT_PROFILE, hk, PLANS, START_AGE, type Plan } from "@/lib/fire"
+import { coastFV, compute, DEFAULT_PROFILE, hk, INFLATION, PLANS, realAnnualPct, START_AGE, type Plan } from "@/lib/fire"
 
 export const Route = createFileRoute("/simulator")({
   component: Simulator,
@@ -111,10 +112,19 @@ function Simulator() {
 
         <div className="flex flex-col gap-2">
           <div className="flex justify-between text-sm font-semibold">
-            <span>{t("Investment return", "投資回報")}</span>
+            <span className="flex items-center gap-1">
+              {t("Investment return", "投資回報")}
+              <InvestmentReturnInfo />
+            </span>
             <span className="text-primary">{ret}% / {t("yr", "年")}</span>
           </div>
           <Slider value={[ret]} min={2} max={10} step={0.5} onValueChange={(v) => setRet(first(v))} aria-label={t("Investment return", "投資回報")} />
+          <p className="text-xs text-muted-foreground">
+            {t(
+              `${ret}% ≈ ${realAnnualPct(ret).toFixed(1)}% real after ${INFLATION * 100}% inflation`,
+              `${ret}% ≈ ${realAnnualPct(ret).toFixed(1)}% 實質回報（扣除 ${INFLATION * 100}% 通脹）`,
+            )}
+          </p>
         </div>
 
         <div className="flex flex-col gap-2">
